@@ -45,8 +45,12 @@
 ;;  (reduce (fn [m [k v]] (assoc m k (conj (m k []) v))) {} [[:a 1] [:a 2] [:b 1] [:b 7]])  
 
 (defn average [points]
-  (let [joint (apply merge-with #(conj (ensure-coll %1) %2) points)] 
-    (->> joint (map (fn [[k v]] [k (mean v)])) (into {}))))
+  (let [joint (apply merge-with 
+	; #(conj (ensure-coll %1) %2) 
+	max
+	points)] 
+    ; (->> joint (map (fn [[k v]] [k (mean v)])) (into {}))
+  ))
 
 (defn find-nearest-cluster [clusters point]
   ;; (errln "point:" (take 5 point) " first center: " (take 5 (:center (first clusters))))
