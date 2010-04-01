@@ -3,7 +3,6 @@
 (defn sqrt [x] (. Math sqrt x))
 (defn sum [s] (apply + s))
 (defn mean [s] (if (number? s) s (if (empty? s) 0 (/ (sum s) (count s)))))
-(defn mean2 [x y] (/ (+ x y) 2.))
 ;; "infinite integral sequence, 0-based, for ordering things"
 (def ordinals (iterate inc 0))
   
@@ -45,10 +44,8 @@
 ;;  (reduce (fn [m [k v]] (assoc m k (conj (m k []) v))) {} [[:a 1] [:a 2] [:b 1] [:b 7]])  
 
 (defn average [points]
-;; one way to average is to conj everything first, then take the mean:
-;; (let [joint (apply merge-with #(conj (ensure-coll %1) %2) points)] (->> joint (map (fn [[k v]] [k (mean v)])) (into {})))
-;; another is to average at each step:
-  (apply merge-with mean2 points))
+  (let [joint (apply merge-with #(conj (ensure-coll %1) %2) points)] 
+    (->> joint (map (fn [[k v]] [k (mean v)])) (into {}))))
 
 (defn find-nearest-cluster [clusters point]
   ;; (errln "point:" (take 5 point) " first center: " (take 5 (:center (first clusters))))

@@ -17,6 +17,7 @@
 
 
 (defn parse-line [line site-id line-id] 
+  "parse a single SU data line and return struct sup, containing id-user, tags, etc., and site-line id"
   (let [
     fields (s2/split #"," line)  ; line  #"," in 1.1
     prefix-length 7 
@@ -37,6 +38,8 @@
   (select-keys user-with-id *user-keys*))
 
 (defn group-user [umap iduser]
+  "match a single user with identical non-id data into site-line map,
+  thus allowing partial matching on similar demographics"
   (let [
     {:keys [sid id]} iduser
     user (user-no-id iduser)
@@ -47,13 +50,16 @@
     (assoc umap user sids)))
   
 (defn group-users [users]
+  "group users with the same demographics together in a map as key,
+  with the value containing a map site=>lines where such demographics occurs"
     (reduce group-user {} users))
           
 (defn user-id [iduser]
+  "select the id part only form an id-user"
   (let [{:keys [sid id]} iduser]
     [sid id]))
     
-
+;; globally defined closures to count occurrences of same demographics
 (def *city-map*    (make-id-mapper))
 (def *state-map*   (make-id-mapper))
 (def *country-map* (make-id-mapper))
@@ -61,6 +67,8 @@
 (def *gender-map*  (make-id-mapper :keep-keys))
 (def *tag-map*     (make-id-mapper))
     
+;; map a user's data from categorical to numerical space 
+;; with the mapper closures defined above
 (defn numeric-user [usr]
   (let [{:keys [sid id age gender city state country]} usr
     uid [sid id]
@@ -72,9 +80,11 @@
     (struct id-user sid id age gender city-num state-num country-num)))
 
 (defn numeric-tags [tags id]
+  "map tags into numeric space"
   (map #((*tag-map* :map) % id) tags))
 
 (defn numeric-data [{:keys [sid id rate time user tags]}]
+  "map an entire data line into numeric space"  
   (let [
     lid        [sid id]
     nuser      (numeric-user user)
@@ -85,6 +95,7 @@
     (struct sup sid id rate time nuser ntags)))
     
 (defn top-maps [mapper & [n]]
+  "find top keys in a mapper, those with the most counts"
   (let [tops (->> ((mapper :get-map)) 
           (map (fn [[k v]] [k ((comp count second) v)])) (sort-by second >))]
         (if n (take n tops) tops)))
