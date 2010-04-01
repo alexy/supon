@@ -47,9 +47,10 @@
 (defn average [points]
   (let [joint (apply merge-with 
 	; #(conj (ensure-coll %1) %2) 
-	max
+  mean2 ;; max
 	points)] 
     ; (->> joint (map (fn [[k v]] [k (mean v)])) (into {}))
+    joint
   ))
 
 (defn find-nearest-cluster [clusters point]
