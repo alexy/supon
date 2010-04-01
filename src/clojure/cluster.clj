@@ -3,6 +3,7 @@
 (defn sqrt [x] (. Math sqrt x))
 (defn sum [s] (apply + s))
 (defn mean [s] (if (number? s) s (if (empty? s) 0 (/ (sum s) (count s)))))
+(defn mean2 [x y] (/ (+ x y) 2.))
 ;; "infinite integral sequence, 0-based, for ordering things"
 (def ordinals (iterate inc 0))
   
