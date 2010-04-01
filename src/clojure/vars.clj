@@ -5,7 +5,9 @@
   (map (fn [[filename site-id]] 
     (vec (map parse-line (read-lines filename) (repeat site-id) (iterate inc 0))))) vec))
 
-(def dv (apply concat dm))
+(def dv (vec (apply concat dm)))
+
+(def tags (vec (map :tags dv)))
 
 (def d1 (first dm))
 (->> dv (map :rate) (filter #(= 1 %)) count)

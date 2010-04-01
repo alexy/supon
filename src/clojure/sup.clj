@@ -1,8 +1,11 @@
 ;; (ns com.suffix
   (use 'clojure.set)
-  (use 'clojure.contrib.duck-streams)
-  (use 'clojure.contrib.seq-utils)
-  (require '[clojure.contrib.str-utils2 :as s2])
+  ;; (use 'clojure.contrib.duck-streams)
+  (use 'clojure.contrib.io)
+  ;; (use 'clojure.contrib.seq-utils)
+  (use 'clojure.contrib.seq)
+  ;; (require '[clojure.contrib.str-utils2 :as s2])
+  (require '[clojure.contrib.string :as s2])
   (import '[org.joda.time DateTime])
 
 (defstruct id-user :sid :id :age :gender :city :state :country)
@@ -12,7 +15,8 @@
 
 
 (defn parse-line [line site-id line-id] 
-  (let [fields (s2/split line #",") 
+  (let [
+    fields (s2/split #"," line)  ; line  #"," in 1.1
     prefix-length 7 
     prefix (take prefix-length fields) 
     [rate time age gender city state country] prefix 
@@ -20,7 +24,8 @@
     time (DateTime. (* (long time) 1000)) 
     user (struct id-user site-id line-id age gender city state country)
     tags (->> (drop prefix-length fields) 
-          (map #(let [[tag n] (s2/split % #":")] [(keyword tag) (Integer/parseInt n)])) (into {}))
+          (map #(let [[tag n] (s2/split #":" %)]  ;  % #":" in 1.1 
+            [(keyword tag) (Integer/parseInt n)])) (into {}))
           ] 
     (struct sup site-id line-id rate time user tags)))
     
