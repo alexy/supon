@@ -85,3 +85,11 @@
         (errln "iteration " iter)
       (recur (readjust-clusters points reassigned) clusters (inc iter)))
     )))
+
+(defn km-tops [km]
+  (map (fn [{:keys [id point-ids center]}] (let [top-tags (take 10 (sort-by second > center))] 
+    [id (count point-ids) top-tags])) km))
+
+(defn print-km-tops [km]
+  (let [kmt (km-tops km)]
+    (doseq [x kmt] (println x))))

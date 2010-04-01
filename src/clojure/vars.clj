@@ -66,3 +66,15 @@
 (def rate-1-tags-sorted (sort-by second > rate-1-tags-counted))
 (take 50 rate-1-tags-sorted)
 ;; ([:prague 2] [:message-board 2] [:smoker-circuit 1] [:aircraft-photos 1] [:film-festivals 1] [:book-stores 1] [:m-self 1] [:advertising-blog 1] [:ageless-wisdom 1] [:houseboat-summit-watts 1] [:american-dream 1] [:salsa 1] [:tbn 1] [:yours-truly 1] [:teenage-repellant 1] [:sexual-diseases 1] [:graphics-astronomy 1] [:chick-flicks 1] [:levers 1] [:artist-graphic-comics 1] [:culinary 1] [:design-magazine 1] [:pastafarianism 1] [:bd 1] [:eurovision 1] [:amazing-aircraft-photos 1] [:dance-mix 1] [:devil-s-story 1] [:video-art 1] [:cultural-studies 1] [:pythpn 1] [:disk-arknoid 1] [:zizek 1] [:vehicles 1] [:foreign-film 1] [:ex-yugoslavia 1] [:ball-toucher 1] [:draw-picasso-head 1] [:honorable 1] [:game-synthesis 1] [:english-mistakes 1] [:fishy-propaganda 1] [:looking-glass 1] [:film-journals 1] [:myth-making 1] [:quantum-news 1] [:hogwash 1] [:ich-ag 1] [:here-kitty-kitty 1] [:awesome-color-mountain 1])
+
+(print-km-tops km)
+;; [0 144 ([:stumblers 642] [:politics 341] [:science 219] [:health 198] [:bizarre 177] [:h5n1 127] [:liberties 103] [:physics 101] [:humor 101] [:iraq 95])]
+;; [1 1493 ([:photography 1346] [:humor 810] [:graphic-design 673] [:internet 572] [:arts 448] [:politics 424] [:science 368] [:bizarre 355] [:video-games 322] [:web-design 302])]
+;; [2 798 ([:humor 1228] [:system-imported 898] [:nude-art 353] [:horses 291] [:adult-humor 272] [:bizarre 263] [:horse 193] [:stumblers 161] [:windows 145] [:martial-arts 139])]
+;; [3 64 ([:politics 4130] [:blogs 1652] [:iraq 1209] [:military 888] [:crime 885] [:science 740] [:internet 706] [:middle-east 653] [:activism 640] [:computer-hardware 605])]
+;; [4 164 ([:stumblers 8565] [:humor 1349] [:internet 1054] [:photography 1021] [:bizarre 925] [:nude-art 874] [:video-games 797] [:painting 669] [:blogs 638] [:drugs 623])]
+;; [5 407 ([:photography 3657] [:arts 1124] [:stumblers 1018] [:married-life 786] [:military 684] [:american-history 501] [:nude-art 455] [:painting 414] [:history 408] [:humor 361])]
+;; [6 419 ([:stumblers 3452] [:open-source 2483] [:politics 1869] [:internet 1709] [:iraq 1366] [:web-design 1266] [:video-games 1260] [:music 1157] [:programming 1107] [:humor 1088])]
+;; [7 298 ([:porn 1205] [:nude-art 712] [:humor 520] [:stumblers 439] [:adult-humor 413] [:gay-sex 280] [:photography 219] [:blogs 212] [:linux 203] [:roleplaying-games 192])]
+;; [8 586 ([:environment 165] [:cats 160] [:cooking 147] [:christianity 145] [:ecommerce 127] [:amateur-radio 121] [:self-improvement 120] [:bizarre 108] [:graphic-design 104] [:activism 103])]
+;; [9 112 ([:astronomy 569] [:unfiled 524] [:catholic 433] [:physics 378] [:linux 360] [:open-source 353] [:space-exploration 319] [:science 188] [:politics 119] [:internet 108])]
