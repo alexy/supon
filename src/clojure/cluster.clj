@@ -1,4 +1,4 @@
-(defn errln [ & args] (.println System/err (str args)))
+(defn errln [ & args] (.println System/err (apply str args)))
 
 (defn sqrt [x] (. Math sqrt x))
 (defn sum [s] (apply + s))
