@@ -7,6 +7,8 @@
   ;; (require '[clojure.contrib.str-utils2 :as s2])
   (require '[clojure.contrib.string :as s2])
   (import '[org.joda.time DateTime])
+  (require 'mapper)
+  (require 'cluster)
 
 (defstruct id-user :sid :id :age :gender :city :state :country)
 (defstruct user :gender :age :city :state :country)

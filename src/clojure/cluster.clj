@@ -17,7 +17,7 @@
   (->> v (map sqr) sum sqrt))
 
 (defn distance [a b]
-  "cosine distance between two sparse vectors, here tag-count maps"
+  "1 - cosine distance between two sparse vectors, here tag-count maps"
   (if (not (and (map? a) (map? b))) 1.
   (let [
     v1 (vals a)
