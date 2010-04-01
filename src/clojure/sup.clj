@@ -115,3 +115,16 @@
     theirs (tag-multi-set them)]
   (subtract-maps ours theirs)))
         
+(defn load-data []
+  "load data into globally-defined vars"
+  
+  (def dm (->> (map vector ["free411.com" "gigaom.com" "hubspot.com" "leadertoleader.org" "simplyexplained.com"] 
+              (iterate inc 0))
+    (map (fn [[site site-id]] [(str "data/" site ".csv") site-id])) 
+    (map (fn [[filename site-id]] 
+      (vec (map parse-line (read-lines filename) (repeat site-id) (iterate inc 0))))) vec))
+
+  (def dv (vec (apply concat dm)))
+
+  (def tags (vec (map :tags dv)))
+)
