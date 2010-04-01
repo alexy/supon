@@ -62,12 +62,12 @@
     (assoc cluster :center center)))
     
 (defn readjust-clusters [points clusters]
-  (vec (map (partial readjust-centroid points) clusters)))
+  (vec (pmap (partial readjust-centroid points) clusters)))
     
 (defn reassign-points [points clusters]
   "assign each point to its nearest cluster"
   (let [
-    nearests (->> points (map (partial find-nearest-cluster clusters)) vec)
+    nearests (->> points (pmap (partial find-nearest-cluster clusters)) vec)
     nearests-poses (map vector nearests ordinals)]
     (reduce (fn [cluvec [c p]] (update-in cluvec [c :point-ids] #(conj % p))) 
       (empty-clusters (count clusters)) nearests-poses)))
