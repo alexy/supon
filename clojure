@@ -1,0 +1,13 @@
+#!/bin/zsh
+JAVA=${JAVA:-java}
+JARS=( lib/*.jar )
+LIB=${(j.:.)JARS}
+#JPERMGEN="-XX:MaxPermSize=1g"
+JCOMPREFS="-XX:+UseCompressedOops"
+CLASSPATH=".:$LIB${CLASSPATH:+:$CLASSPATH}"
+JAVA_OPTS="$JAVA_OPTS $JPERMGEN $JCOMPREFS -server -d64"
+#echo "JAVA_OPTS: $JAVA_OPTS"
+#echo "CLASSPATH: $CLASSPATH"
+CMD="rlwrap $JAVA $JAVA_OPTS -cp $CLASSPATH clojure.main"
+echo "CMD: $CMD"
+${=CMD}
