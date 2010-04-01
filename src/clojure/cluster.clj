@@ -47,7 +47,7 @@
 (defn average [points]
   (let [joint (apply merge-with 
 	; #(conj (ensure-coll %1) %2) 
-  mean2 ;; max
+  max ;; mean2
 	points)] 
     ; (->> joint (map (fn [[k v]] [k (mean v)])) (into {}))
     joint
