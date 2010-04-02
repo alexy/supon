@@ -1,37 +1,9 @@
 ;; (ns com.suffix
   (use 'clojure.set)
-  ;; (use 'clojure.contrib.duck-streams)
-  (use 'clojure.contrib.io)
-  ;; (use 'clojure.contrib.seq-utils)
-  (use 'clojure.contrib.seq)
-  ;; (require '[clojure.contrib.str-utils2 :as s2])
-  (require '[clojure.contrib.string :as s2])
   (import '[org.joda.time DateTime])
   (require 'mapper)
   (require 'cluster)
 
-;; common formats to keep the data in
-(defstruct id-user :sid :id :age :gender :city :state :country)
-(defstruct user :gender :age :city :state :country)
-(def *user-keys* (keys (struct user)))
-(defstruct sup  :sid :id :rate :time :user :tags)
-
-
-(defn parse-line [line site-id line-id] 
-  "parse a single SU data line and return struct sup, containing id-user, tags, etc., and site-line id"
-  (let [
-    fields (s2/split #"," line)  ; line  #"," in 1.1
-    prefix-length 7 
-    prefix (take prefix-length fields) 
-    [rate time age gender city state country] prefix 
-    [rate time age gender] (map #(Integer/parseInt %) [rate time age gender]) 
-    time (DateTime. (* (long time) 1000)) 
-    user (struct id-user site-id line-id age gender city state country)
-    tags (->> (drop prefix-length fields) 
-          (map #(let [[tag n] (s2/split #":" %)]  ;  % #":" in 1.1 
-            [(keyword tag) (Integer/parseInt n)])) (into {}))
-          ] 
-    (struct sup site-id line-id rate time user tags)))
     
 (defn user-no-id [user-with-id]
   "select a subset of id-user without any ids,
@@ -137,19 +109,3 @@
     ours   (tag-multi-set us)
     theirs (tag-multi-set them)]
   (subtract-maps ours theirs)))
-        
-(defn load-data []
-  "load data into globally-defined vars"
-  ;; dm is the data matrix, where each site has its own list and the data is a list of lists
-  (def dm (->> (map vector ["free411.com" "gigaom.com" "hubspot.com" "leadertoleader.org" "simplyexplained.com"] 
-              (iterate inc 0))
-    (map (fn [[site site-id]] [(str "data/" site ".csv") site-id])) 
-    (map (fn [[filename site-id]] 
-      (vec (map parse-line (read-lines filename) (repeat site-id) (iterate inc 0))))) vec))
-
-  ;; in dv, the matrix is unrolled into a vector; since we preserve site id in each row, no data is lost
-  (def dv (vec (apply concat dm)))
-
-  ;; tags are just the tag parts of each line, for kmeans clustering
-  (def tags (vec (map :tags dv)))
-)

@@ -1,0 +1,15 @@
+Further desirable data mining.
+
+High-performance Machine Learning libraries for Java can be used for off-the-shelf algorithms are available and can be leveraged from Clojure, such as
+
+-- MALLET http://mallet.cs.umass.edu/
+-- Mahout http://lucene.apache.org/mahout/
+
+Frequent Sets
+
+-- assemble frequent sets of tags co-occurring together
+-- recommend relevant tags based on an item-based recommender
+
+Rating Prediction
+
+Use SVMs or Logistic Regression to predict which sites are likely to be rated based on tags.

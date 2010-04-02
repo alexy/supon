@@ -117,3 +117,11 @@
 ;; [7 298 ([:porn 1205] [:nude-art 712] [:humor 520] [:stumblers 439] [:adult-humor 413] [:gay-sex 280] [:photography 219] [:blogs 212] [:linux 203] [:roleplaying-games 192])]
 ;; [8 586 ([:environment 165] [:cats 160] [:cooking 147] [:christianity 145] [:ecommerce 127] [:amateur-radio 121] [:self-improvement 120] [:bizarre 108] [:graphic-design 104] [:activism 103])]
 ;; [9 112 ([:astronomy 569] [:unfiled 524] [:catholic 433] [:physics 378] [:linux 360] [:open-source 353] [:space-exploration 319] [:science 188] [:politics 119] [:internet 108])]
+
+;; some Incanter charting
+;; see http://incanter.org/ for Incanter info
+;; bar chart of the number of data points from a state by state, in descending order by state
+;;  California is leftmost with 521
+(require 'incanter.charts)
+(def states-desc (->> ((*state-map* :get-map)) (map (fn [[k v]] [k (count (second v))])) (sort-by second >)))
+(view (incanter.charts/bar-chart (map first states-desc) (map second states-desc)))
