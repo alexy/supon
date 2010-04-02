@@ -10,6 +10,7 @@
   (require 'mapper)
   (require 'cluster)
 
+;; common formats to keep the data in
 (defstruct id-user :sid :id :age :gender :city :state :country)
 (defstruct user :gender :age :city :state :country)
 (def *user-keys* (keys (struct user)))
@@ -101,26 +102,37 @@
         (if n (take n tops) tops)))
 
 (defn all-tags [dv]
+  "get all tags from all data points into a vector"
   (apply concat (map #(keys (:tags %)) dv)))
   
-(defn tag-simple-set [dv]    
+(defn tag-simple-set [dv]
+  "make a set of unique tags"
   ;; same as: (reduce conj #{} (apply concat (map #(keys (:tags %)) us)))
   (set (all-tags dv)))
 
-(defn tag-multi-set [dv]    
+(defn tag-multi-set [dv]
+  "create a multiset out of the tag list as a map, 
+  where each tag will be a unique key
+  and the number of occurrences will the be value"
   (reduce (fn [res e] (update-in res [e] #(inc (or % 0)))) 
     {} (all-tags dv)))
     
 (defn subtract-maps [m1 m2]
+  "leave only those keys of m1 not present in m2"
   (apply dissoc m1 (keys m2)))
   
 (defn uniq-tags [dv f-test]
+  "using a boolean function f-test, separate the data into two halves,
+  then find the unique tags in the first half not encountered in the second"
   (let [[us them] (separate f-test dv) 
     ours   (tag-simple-set us)
     theirs (tag-simple-set them)]
     (difference ours theirs)))
             
 (defn uniq-tags-counted [dv f-test]
+  "same as uniq-tags, but works on multisets of tags,
+  thus preserving the number of users who applied each tag,
+  allowing for subsequent sorting by that number"
   (let [[us them] (separate f-test dv) 
     ours   (tag-multi-set us)
     theirs (tag-multi-set them)]
@@ -128,14 +140,16 @@
         
 (defn load-data []
   "load data into globally-defined vars"
-  
+  ;; dm is the data matrix, where each site has its own list and the data is a list of lists
   (def dm (->> (map vector ["free411.com" "gigaom.com" "hubspot.com" "leadertoleader.org" "simplyexplained.com"] 
               (iterate inc 0))
     (map (fn [[site site-id]] [(str "data/" site ".csv") site-id])) 
     (map (fn [[filename site-id]] 
       (vec (map parse-line (read-lines filename) (repeat site-id) (iterate inc 0))))) vec))
 
+  ;; in dv, the matrix is unrolled into a vector; since we preserve site id in each row, no data is lost
   (def dv (vec (apply concat dm)))
 
+  ;; tags are just the tag parts of each line, for kmeans clustering
   (def tags (vec (map :tags dv)))
 )
